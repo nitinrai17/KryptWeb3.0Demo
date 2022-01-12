@@ -1,0 +1,28 @@
+sudo: required
+services:
+    - docker
+    
+before_install:
+    - 
+
+script:
+    - 
+
+after_success: 
+    - docker build -t nitinrai17/kryptweb3demo:0.0.1 ./client
+    # login into docker hub 
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+    #  take those image and push into the docker hub 
+    - docker push  nitinrai17/kryptweb3demo:0.0.1 
+    
+deploy:
+    provider: elasticbeanstalk
+    region: us-east-2
+    app: kryptweb3demo
+    env: kryptweb3demo-env
+    bucket_name: elasticbeanstalk-us-east-2-117771544263
+    bucket_path: kryptweb3demo
+    on: 
+        branch: master
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY

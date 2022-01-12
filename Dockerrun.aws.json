@@ -1,0 +1,19 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [       
+        {
+            "name":"client",
+            "image":"nitinrai17/kryptweb3demo:0.0.1",
+            "hostname": "client",
+            "essential": true,
+            "portMappings": [
+                {
+                    "hostPort": 80,
+                    "containerPort": 80
+                }
+            ],
+            "memory": 128
+        }
+    ]
+
+}

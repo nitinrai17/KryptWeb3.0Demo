@@ -1,0 +1,13 @@
+version: "3"
+services:
+   #client
+   client:
+      image: kryptweb3demo:0.0.1
+      container_name: 'client'
+      build:
+         context: ./client 
+         dockerfile: Dockerfile
+      expose:
+         - 80
+      ports:
+         - '80:80'   

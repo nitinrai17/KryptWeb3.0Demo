@@ -31,8 +31,10 @@ jobs:
       - uses: actions/checkout@v2
       - name: Docker username 
         run: echo ${{ secrets.DOCKER_USERNAME }}
+      
       - name: print Github run id  
         run: echo ${GITHUB_RUN_ID}
+     
       - name: Building Docker Image
         run: docker build -t ${{ secrets.DOCKER_REPO }}:0.0.1 -t ${{ secrets.DOCKER_REPO }}:${GITHUB_RUN_ID} .
 
@@ -40,7 +42,7 @@ jobs:
         run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
       - name: Publish Docker Image
-        run: docker push $REPO
+        run: docker push ${{ secrets.DOCKER_REPO }}:0.0.1
     
     # deploy in aws elastic beanstalk
   deployAws:
@@ -62,4 +64,5 @@ jobs:
         environment_name: Kryptweb3demo-env
         version_label: ${GITHUB_RUN_ID}
         region: ap-south-1
+        use_existing_version_if_available: true
         deployment_package: deploy.zip

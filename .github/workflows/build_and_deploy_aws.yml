@@ -34,11 +34,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Docker username 
-        run: echo $DOCKER_USERNAME
+        run: echo ${{ secrets.DOCKER_USERNAME }}
       - name: print Github run id  
         run: echo ${GITHUB_RUN_ID}
       - name: Building Docker Image
-        run: docker build -t $REPO:0.0.1 -t $REPO:${GITHUB_RUN_ID} .
+        run: docker build -t $${{ secrets.DOCKER_REPO }}:0.0.1 -t ${{ secrets.DOCKER_REPO }}:${GITHUB_RUN_ID} .
 
       - name: Docker Hub Sign-in
         run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin

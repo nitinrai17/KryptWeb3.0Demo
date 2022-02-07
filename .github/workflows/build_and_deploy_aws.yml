@@ -1,0 +1,65 @@
+name: CI build and deploy aws
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: CI build action
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build docker-compose stack
+        run: |
+          echo ---Building and starting up docker---
+          docker-compose -f docker-compose.yml up -d --build
+          echo ---Containers up---
+      - name: Check running containers
+        run: docker ps
+     
+      - name: Stop containers
+        if: always()
+        run: docker-compose -f docker-compose.yml down
+        
+     #docker push to dockerhub
+  docker:
+    name: Publish Docker Image
+    runs-on: ubuntu-latest
+    env:
+      REPO: ${{ secrets.DOCKER_REPO }}
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Docker Hub Sign-in
+        run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+
+      - name: Building Docker Image
+        run: docker build -t $REPO:latest -t $REPO:${GITHUB_RUN_ID} .
+
+      - name: Publish Docker Image
+        run: docker push $REPO
+    
+    # deploy in aws elastic beanstalk
+  deployAws:
+    name: Deploy in AWS EBS
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout source code
+      uses: actions/checkout@v2
+
+    - name: Generate deployment package
+      run: zip -r deploy.zip . -x '*.git*'
+
+    - name: Deploy to EB
+      uses: einaregilsson/beanstalk-deploy@v20
+      with:
+        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        application_name: kryptweb3demo
+        environment_name: Kryptweb3demo-env
+        version_label: ${GITHUB_RUN_ID}
+        region: ap-south-1
+        deployment_package: deploy.zip

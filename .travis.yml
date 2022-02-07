@@ -17,10 +17,10 @@ after_success:
     
 deploy:
     provider: elasticbeanstalk
-    region: us-east-2
+    region: ap-south-1
     app: kryptweb3demo
-    env: kryptweb3demo-env
-    bucket_name: elasticbeanstalk-us-east-2-117771544263
+    env: Kryptweb3demo-env
+    bucket_name: elasticbeanstalk-ap-south-1-544762003684
     bucket_path: kryptweb3demo
     on: 
         branch: master

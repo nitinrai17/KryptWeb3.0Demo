@@ -29,7 +29,7 @@ export const TransactionProvider = ({children }) =>{
 
     const getAllTransactions = async ()=>{
         try {
-            if(!ethereum ) return alert("Please install metamask ");
+            if(!ethereum ) return alert("Please install metamask plugin ");
             const transactionContract =getEthereumContract();
             const availableTransactions = await transactionContract.getAllTransactions(); 
 
@@ -50,7 +50,7 @@ export const TransactionProvider = ({children }) =>{
 
     const checkIfWalletIsConnected = async ()=> {
         try {
-            if(!ethereum ) return alert("Please install metamask ");
+            if(!ethereum ) return alert("Please install metamask plugin ");
         
             const accounts = await ethereum.request({method: 'eth_accounts'});
     
@@ -87,7 +87,7 @@ export const TransactionProvider = ({children }) =>{
 
     const connectWallet = async () =>{
         try {
-            if(!ethereum ) return alert("Please install metamask ");
+            if(!ethereum ) return alert("Please install metamask plugin ");
         
             const accounts = await ethereum.request({method: 'eth_requestAccounts'});
 
@@ -104,7 +104,7 @@ export const TransactionProvider = ({children }) =>{
     const sendTransaction = async () =>{
         console.log(" sendTransaction");
         try {
-            if(!ethereum ) return alert("Please install metamask ");
+            if(!ethereum ) return alert("Please install metamask plugin ");
 
             ///get th data from the form
             const { addressTo , amount , keyword, message } = formData; 

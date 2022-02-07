@@ -33,11 +33,14 @@ jobs:
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
     steps:
       - uses: actions/checkout@v2
-      - name: Docker Hub Sign-in
-        run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-
       - name: Building Docker Image
-        run: docker build -t $REPO:latest -t $REPO:${GITHUB_RUN_ID} .
+        run: echo $DOCKER_USERNAME
+        run: echo ${GITHUB_RUN_ID}
+        run: docker build -t $REPO:0.0.1 -t $REPO:${GITHUB_RUN_ID} .
+
+      - name: Docker Hub Sign-in
+        #run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+        run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
 
       - name: Publish Docker Image
         run: docker push $REPO
@@ -46,6 +49,9 @@ jobs:
   deployAws:
     name: Deploy in AWS EBS
     runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     steps:
     - name: Checkout source code
       uses: actions/checkout@v2

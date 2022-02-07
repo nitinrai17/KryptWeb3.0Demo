@@ -1,6 +1,6 @@
 ## Krypt Web 3.0 Demo
 
-This Project is Krypt Web 3.0 Demo in which we can transfer amount from one ethereum account another account.
+This Project is Krypt Web 3.0 Demo in which we can transfer amount from one ethereum account another account. You need to install the Metamask plugin in the browser for accounts mangement. 
 
 
 ### Home Section 
